@@ -4,6 +4,7 @@ import './game.css';
 import Header from '../header'
 import Status from '../status'
 import Board from '../board'
+import UndoButton from '../undo-button';
 
 export default class Game extends React.Component{
 
@@ -38,23 +39,38 @@ export default class Game extends React.Component{
               stepNumber: history.length,
               xIsNext: !this.state.xIsNext
             });
-            return 
+            return;
           }                 
         }
         alert("Incorrect move! Please try again");        
       }
 
+      onUndoClick = ()=>{   
+
+        this.setState(({history, stepNumber, xIsNext})=>{
+          const prevHistory = history.slice(0, history.length-1);
+
+          return {
+            stepNumber: stepNumber-1,
+            xIsNext: !xIsNext,
+            history: prevHistory
+          }
+        });
+      }
+
     render(){
         const {history, stepNumber, xIsNext} = this.state;
         const current = history[stepNumber];
-        //console.log('stepNumber' , stepNumber)
 
         return (
             <div className='game'>
                 <Header />
-                <Status turn={xIsNext} turnNumber={stepNumber}/>
+                <div className="panel">
+                  <Status turn={xIsNext} turnNumber={stepNumber}/>
+                  <UndoButton onUndoClick={ ()=> this.onUndoClick() } isDisabled={ stepNumber === 0? true: false }/>
+                </div>                
                 <Board squares={current.squares}
-                       onClick={i => this.handleClick(i)}
+                       onClick={ i => this.handleClick(i) }
                 />
             </div>
         );

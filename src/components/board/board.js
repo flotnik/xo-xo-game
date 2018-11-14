@@ -18,10 +18,10 @@ export default class Board extends React.Component{
     }
 
     createTable = ()=>{
-        let table = []
+        let table = [];
 
         //tr with action buttons 0-5
-        let action_button_tds = []
+        let action_button_tds = [];
         for(let i = 0; i < 6; i++){            
             action_button_tds.push(<td key={i}>{this.renderActionButton(i)}</td>)            
         }
